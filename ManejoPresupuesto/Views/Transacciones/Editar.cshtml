@@ -1,0 +1,80 @@
+﻿@model TransaccionActualizacionViewModel
+@{
+    ViewData["Title"] = "Editar Transacción";
+    var linkCancelar = Model.UrlRetorno ?? Url.Action("Index");
+}
+
+<h1>Crear Transacción</h1>
+
+<form asp-action="Editar">
+    <div asp-validation-summary="ModelOnly" class=" text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="UrlRetorno" />
+    <input type="hidden" asp-for="MontoAnterior" />
+    <input type="hidden" asp-for="CuentaAnteriorId" />
+    <div class=" mb-3">
+        <label asp-for="FechaTransaccion" class=" form-label"></label>
+        <input asp-for="FechaTransaccion" class="form-control" />
+        <span asp-validation-for="FechaTransaccion" class=" align-content-around-danger"></span>
+    </div>
+
+    <div class=" mb-3">
+        <label asp-for="CuentaId" class=" form-label"></label>
+        <select asp-for="CuentaId" asp-items="Model.Cuentas" class=" form-select"></select>
+        <span asp-validation-for="CuentaId" class=" text-danger"></span>
+    </div>
+
+    <div class=" mb-3">
+        <label asp-for="TipoOperacionId" class=" form-label"></label>
+        <select asp-for="TipoOperacionId" asp-items="Html.GetEnumSelectList<TipoOperacion>()" class=" form-select"></select>
+        <span asp-validation-for="TipoOperacionId" class=" text-danger"></span>
+    </div>
+
+    <div class=" mb-3">
+        <label asp-for="CategoriaId" class=" form-label"></label>
+        <select asp-for="CategoriaId" asp-items="Model.Categorias" class=" form-select"></select>
+        <span asp-validation-for="CategoriaId" class=" text-danger"></span>
+    </div>
+
+    <div class=" mb-3">
+        <label asp-for="Monto" class=" form-label"></label>
+        <input asp-for="Monto" class="form-control" />
+        <span asp-validation-for="Monto" class=" align-content-around-danger"></span>
+    </div>
+
+    <div class=" mb-3">
+        <label asp-for="Nota" class=" form-label"></label>
+        <textarea asp-for="Nota" class="form-control"></textarea>
+        <span asp-validation-for="Nota" class=" align-content-around-danger"></span>
+    </div>
+
+    <button class=" btn btn-primary" asp-action="Crear">Actualizar</button>
+    <button class=" btn btn-danger" asp-action="Borrar">Borrar</button>
+    <a class=" btn btn-secondary" href="@linkCancelar">Cancelar</a>
+</form>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="~/js/FormularioTransacciones.js" asp-append-version="true"></script>
+
+   @* Esta peticion AJAX sirve para relacionar los campos Tipo de operacion con Categoria
+    De esta manera, cuando seleccionemos un tipo de operación
+    en el campo categoria se mostraran solo las relacionadas *@
+
+    <script>
+        const urlObtenerCategorias = '@Url.Action("ObtenerCategorias")';
+        $(function(){
+            inicializarFormulariotransacciones(urlObtenerCategorias);
+        })
+
+        //para que los numeros con coma sean interpretados como numeros en el navegador
+
+        $.validator.methods.number = function (value, element) {
+
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)?(?:,\d+)?$/.test(value);
+        }
+
+    </script>
+
+    }

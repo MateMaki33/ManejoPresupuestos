@@ -1,0 +1,47 @@
+﻿
+@model TipoCuenta
+@{
+    ViewData["Title"] = "Crear Tipo de Cuenta";
+}
+
+<h1>Crear un tipo de cuenta</h1>
+<h5>Prestamos, crédito ... </h5>
+
+<!--
+
+hacemos un div que muestra error si las validaciones fallan
+Los valores que adquiere son: All y ModelOnly
+
+All: Incluye los errores de cada campo
+ModelOnly: Muestra los errores generales del modelo ya que el de cada campo lo tenemos en otro validation
+
+
+-->
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+<form  asp-action="Crear">
+    <div class="mb-3">
+
+        <!-- asp-for sustituye el for, id y el name por la propiedad correspondiente del modelo -->
+        <label asp-for="Nombre" class="form-label"></label>
+        <input type="text" asp-for="Nombre" class="form-control"/>
+        <!-- asp-validation-for muestra el mensaje de validacion -->
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+
+
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a class=" btn btn-secondary" asp-action="Index">Cancelar</a>
+</form>
+
+<!--
+Validamos de lado cliente con jQuery 
+
+Las secciones se renderizan en el layout con el método
+RenderSectionAsync()
+-->
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}
